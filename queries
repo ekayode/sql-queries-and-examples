@@ -1,0 +1,778 @@
+SELECT * FROM EMP
+
+SELECT * FROM EMP;
+
+#command structure
+SELECT <column>
+FROM <table>
+
+#from example
+SELECT JOB, ENAME
+FROM EMP;
+
+#select all the columns
+SELECT *
+FROM EMP;
+
+#query dept table and get name and location
+SELECT DNAME, LOC
+FROM DEPT;
+
+#to remove duplicates us DISTINCT
+SELECT DISTINCT JOB FROM EMP;
+
+#using the where clause..the string in '' has to match the data MANAGER #versus manager
+SELECT * 
+FROM EMP 
+WHERE JOB = 'MANAGER'
+
+#using AND is same as where, so only need WHERE once
+SELECT * 
+FROM EMP 
+WHERE JOB = 'MANAGER'
+AND SAL = 1600
+AND COMM = 300
+
+#using != is equivalent to not equals
+#the below will return all employees that are not a manger
+SELECT * 
+FROM EMP 
+WHERE JOB != 'MANAGER'
+
+#quiz, query where commission is greater than sal
+SELECT * FROM EMP WHERE COMM > SAL;
+
+#quiz, query employees that are not managers and salary greater than 2500 #and work in department 20
+SELECT *
+FROM EMP
+WHERE JOB != 'MANAGER'
+AND SAL > 2500
+AND DEPTNO = 20
+
+#using an OR statement
+SELECT * FROM EMP
+WHERE JOB = 'SALESMAN' 
+OR JOB = 'CLERK'
+
+#names of emp that are not managers nor salesmna and have salary greater #than or equal to 2000
+SELECT ENAME FROM EMP
+WHERE JOB != 'MANAGER'
+OR JOB != 'SALESMAN'
+AND SAL >= 2000
+
+#query names and hiredates of emp that work in dalas(20) or chicago(30)
+SELECT ENAME, HIREDATE FROM EMP
+WHERE DEPTNO = 20
+OR DEPTNO = 30
+
+#or we can use an IN clause
+SELECT ENAME, HIREDATE FROM EMP
+WHERE DEPTNO IN (20, 30)
+
+#or we can do NOT IN clause to exclude
+SELECT ENAME, HIREDATE FROM EMP
+WHERE DEPTNO NOT IN (20, 30)
+
+#using a between clause
+SELECT * FROM EMP
+WHERE HIREDATE BETWEEN '05/01/1981' AND '12/09/1982'
+
+#using a between clause includes the numbers in the query
+SELECT * FROM EMP
+WHERE SAL BETWEEN 1000 AND 2000
+
+#to find empty cells
+SELECT * FROM EMP
+WHERE COMM IS NULL
+
+#to find the cells that are not empy
+SELECT * FROM EMP
+WHERE COMM IS NOT NULL
+
+#quiz
+SELECT * FROM EMP
+WHERE (COMM IS NULL
+OR COMM = 0)
+AND (SAL BETWEEN 1101 AND 4999
+AND SAL != 1500)
+
+ORRRRRRR
+SELECT * FROM EMP
+WHERE COMM IS NULL
+OR COMM = 0
+AND SAL > 1100 AND < 5000
+AND SAL <> 3000
+
+#quiz
+SELECT * FROM EMP
+WHERE JOB = 'SALESMAN'
+AND (COMM = 300
+OR COMM > 1000)
+
+#we can use LIKE to represent approximate and % which is a wild card and can represent any character..the below gives us all salesman
+SELECT * FROM EMP
+WHERE JOB LIKE 'S%'
+
+#to look for MANAGER
+SELECT * FROM EMP
+WHERE JOB LIKE '%GER'
+
+#to create alias for columns
+SELECT ENAME AS "EMPLOYEE NAME", SAL AS SALARY, COMM AS COMMISION
+FROM EMP
+
+#to do concatination
+SELECT ENAME || ' makes $' || SAL || ' per month' AS "EMPLOYEE SALARY"
+FROM EMP
+WHERE JOB = 'MANAGER'
+
+ORR
+
+we could do 
+
+SELECT CONCAT ('my name is ', ename) AS name
+from EMP
+
+
+#order by in descending order (take DESC out to sort by ascending)
+SELECT ENAME, SAL
+FRPM EMP
+ORDER BY SAL DESC
+
+#order by multiple columns
+SELECT DEPTNO, SAL, ENAME
+FROM EMP
+ORDER BY DEPTNO, SAL
+
+1)
+SELECT SUPPLIER_NAME
+FROM SUPPLIERS_TABLE
+WHERE STATE = GEORGIA
+OR STATE = CALIFORNIA
+
+2)
+SELECT SUPPLIER_NAME
+FROM SUPPLIERS_TABLE 
+WHERE SUPPLIER_NAME LIKE "%wo" 
+OR SUPPLIER_NAME LIKE "%i" 
+OR SUPPLIER_NAME LIKE "%I" 
+
+3)
+SELECT SUPPLIER_NAME
+FROM SUPPLIERS_TABLE 
+WHERE TOTAL_SPENT BETWEEN 37000 AND 80000
+
+4)
+SELECT SUPPLIER_NAME, STATE
+FROM SUPPLIERS_TABLE 
+WHERE (WHERE STATE = GEORGIA
+OR STATE = ALASKA)
+AND (SUPPLIER_ID = 100
+OR SUPPLIER_ID > 600)
+AND (TOTAL_SPENT < 100000
+OR TOTAL_SPENT = 220000)
+
+5) FALSE
+6) FALSE
+
+7) FALSE
+
+8) TRUE
+9) FALSE
+
+The conceptual order of query processing is:
+1. FROM
+2. WHERE
+3. GROUP BY
+4. HAVING
+5. SELECT
+6. ORDER BY
+
+#makes the result uppercase
+SELECT UPPER('HELLO')
+FROM EMP
+
+#used to test arguement..its a 1 record dummy table
+SELECT LOWER('HELLO')
+FROM DUAL
+
+#practice concat
+SELECT CONCAT(LOWER(ENAME), ' IS THE NAME and their job is:', UPPER(JOB))
+FROM EMP
+
+#INITCAP which capitalize all the first words
+SELECT INITTCAP('hello my name is emmanuel')
+FROM DUAL
+
+#LENGTH counts the number of characters in a string
+SELECT ENAME, LENGTH(ENAME) AS LENGTH
+FROM EMP
+
+#we can use the where clause with LENGTH 
+SELECT ENAME, LENGTH(ENAME) AS LENGTH
+FROM EMP
+WHERE LENGTH(ENAME) = 6
+
+#SUBSTR which is sub string, which helps extract data
+#the below starts at the second character and picks two characters
+#(the string, start, end)
+SELECT SUBSTR('hello', 2, 2)
+FROM DUAL
+
+#LPAD adds padding to the string
+#(string, total width of string after padding, actual character to pad)
+SELECT LPAD('hello', 10, '&')
+from dual
+
+#we also have a RPAD
+
+#LTRIM trim characters starting from left(data, character to trim)
+SELECT LTRIM('hello', 'h')
+from dual
+
+#we also have RTRIM
+
+#ROUND function rounds the number to certain precision
+round(the number, precision)
+round(100.8478,2) from dual 
+	return 100.8478
+
+#TRUNC function collapses the number to a certain number..does not round
+round(the number, (optional)how far to trunc)
+
+#SYSDATE returns current date of operating system
+SELECT SYSDATE FROM DUAL
+
+#SYSTIMESTAMP returns date and month, time 
+SELECT SYSTIMESTAMP FROM DUAL
+
+#add_month function add months to a string
+SELECT ADD_MONTHS('MM/DD/YYYY', T) FROM DUAL
+SELECT ADD_MONTHS('05/22/2018', 3) FROM DUAL
+	return 08/22/208
+
+#SELECT MONTHS_BETWEEN returns the number of months between dates
+SELECT MONTHS_BETWEEN(end date, start date)
+
+#TRUNC brings first of the month or year
+select ename, hiredate, trunc(hiredate, 'MONTH')
+from emp
+where trunc(hiredate, 'YEAR') = '01/01/1982'
+
+#TO_CHAR converts a string to a format
+#there are different formate elements for dates, look it up
+TO_CHAR(date or number to convert, formatting element)
+SELECT TO_CHAR(SYSDATE, 'MM-DD-YYYY')
+SELECT TO_CHAR(SYSDATE, 'ddth "of" month, yyyy') from dual
+
+#converts the salaries or data to a partciular format. The string of numbers will only go to the number of charaters given (ex.$99.99 vs $99,999.99) 
+SELECT ENAME, TO_CHAR(SAL, '$99,999.99') FROM EMP
+
+#TO_DATE takes string and converts to date
+SELECT TO_DATE(string, date format)
+SELECT TO_DATE('2012-08-27', 'YYYY-MM-DD') FROM DUAL
+SELECT ADD_MONTHS(TO_DATE('2012-08-27', 'YYYY-MM-DD'), 2) FROM DUAL
+SELECT TO_DATE('3 of June, 2012', 'dd "of" Month, YYYY') FROM DUAL
+
+#returns the last day of the month in which the given date falls
+LAST_DAY(d)
+
+#function returns a valid date representing the first occurrence of the #c day following the date represented in d
+NEXT_DAY(d, c)
+
+#converts NULL empty cell to either a number or string
+SELECT ENAME, JOB, SAL, NVL(COMM, 0)
+FROM EMP
+WHERE EMPNO IN (7839, 7698, 7566, 7654)
+
+#convert NULL to character/ string
+SELECT ENAME, JOB, SAL, NVL(TO_CHAR(COMM), 'no data found')
+FROM EMP
+WHERE EMPNO IN (7839, 7698, 7566, 7654)
+
+#converts a certain character to NULL
+SELECT ENAME, LENGTH(ENAME), NULLIF(LENGTH(ENAME), 5)
+FROM EMP
+
+#converts null cells to a character
+SELECT ENAME, LENGTH(ENAME), NVL(NULLIF(TO_CHAR(LENGTH(ENAME)), TO_CHAR(5)), 'length is 5')
+FROM EMP
+
+#problem set
+1)
+SELECT UPPER(NAME) || ' has the population of ' || POPULATION
+FROM CITY
+WHERE COUNTRYCODE = 'CBD'
+
+SELECT CONCAT(CONCAT(UPPER(name), ' has the population of '), population)
+FROM city
+WHERE LOWER(countrycode) = 'cbd';
+
+2)
+SELECT SUBSTR('DISTRICT', 1, 3) || '-' || SUBSTR('DISTRICT', -3)
+from dual
+
+SELECT CONCAT(CONCAT(UPPER(SUBSTR(district, 1, 3)), ' - '), 
+       UPPER(SUBSTR(district, LENGTH(district) - 2)))
+FROM city;
+
+3)
+INVALID
+
+4) NO
+
+5)D
+6)D
+7)A
+8) FALSE
+9) FALSE
+
+#MIN function
+SELECT MIN(SAL) AS MIN_SAL FROM EMP
+
+#MAX function
+SELECT MAX(SAL) AS MAX_SAL FROM EMP
+
+#SUM
+#MIN function
+SELECT SUM(SAL) AS SUM_SAL FROM EMP
+
+#WWHICH MANAGER HAS THE HIGHEST SALARY
+SELECT MAX(SAL)
+FROM EMP
+WHERE JOB = 'MANAGER'
+
+#AVERAGE
+SELECT AVG(SAL) AS AVG_SAL FROM EMP
+
+#COUNT
+SELECT COUNT(ENAME) AS COUNT FROM EMP
+
+#COUNT does include fields that dont have data
+
+#COUNT is the most direct way to count columns
+SELECT COUNT(*) AS COUNT FROM EMP
+
+#statistical analysis
+SELECT SUM(SAL) AS SUM, AVG(SAL) AS AVG, MAX(SAL) AS MAX, MIN(SAL) AS MIN, COUNT(*) FROM EMP
+
+#GROUP BY
+SELECT AVG(SAL), JOB
+FROM EMP
+GROUP BY JOB
+
+#COUNT nuber of columns within a particular group
+SELECT COUNT(*), JOB
+FROM EMP
+GROUP BY JOB
+
+#HAVING is similar to WHERE but is allowed in the GROUP clause
+SELECT JOB 
+FROM EMP
+GROUP BY JOB
+HAVING COUNT(*) = 2
+
+SELECT DEPTNO
+FROM EMP
+GROUP BY DEPTNO
+HAVING COUNT(*) > 3
+
+#the below query counts how many job titles are in a particular dept
+SELECT JOB, DEPTNO, COUNT(*)
+FROM EMP
+GROUP BY JOB, DEPTNO
+
+#nested query
+SELECT * FROM DEPT
+WHERE DEPTNO < (SELECT DEPTNO FROM DEPT WHERE DEPTNO = 30)
+
+IS SAME AS
+
+SELECT * FROM DEPT
+WHERE DEPTNO < 30
+AND DNAME = 'ACCOUNTING'
+
+SELECT * FROM EMP WHERE DEPTNO IN (SELECT DEPTNO FROM DEPT WHERE DEPTNO IN (10,20))
+
+#using a nested query to combine tables
+SELECT * FROM EMP
+WHERE DEPTNO = (SELECT DEPTNO FROM DEPT WHERE LOC = 'CHICAGO')
+
+#when doing nested query, cannot have a multi-function result in a overall query. the inner query should be single row functions (which would include a WHERE clause)
+
+
+#JOIN TABLE.. the below says all records where deptno is equal in both tables
+#this is also the same as a INNER JOIN
+SELECT * 
+FROM EMP, DEPT
+WHERE EMP.DEPTNO = DEPT.DEPTNO
+
+#INNER JOIN
+SELECT *
+FROM EMP INNER JOIN DEPT
+ON EMP.DEPTNO = DEPT.DEPTNO
+
+#quiz, show name title and salary of employees that work in dallas
+SELECT ENAME as FIRST_NAME, JOB, SAL   --#we can specify this as EMP.ENAME, EMP.JOB, EMP.SAL
+FROM EMP, DEPT
+WHERE EMP.DEPTNO = DEPT.DEPTNO
+AND LOC = 'DALLAS' --#we can specify this as DEPT.LOC
+
+#giving alias to tables
+SELECT ENAME, JOB, SAL, E.DEPTNO   --#we need to specify deptno here because its in both tables
+FROM EMP E, DEPT D
+WHERE E.DEPTNO = D.DEPTNO
+AND LOC = 'DALLAS' --#we can specify this as DEPT.LOC
+
+#using nested queries as alias to tables
+SELECT ENAME, JOB, SAL, E.DEPTNO   --#we need to specify deptno here because its in both tables
+FROM (SELECT * FROM EMP) E, (SELECT * FROM DEPT) D --#we can use the subquery to convert to alias
+WHERE E.DEPTNO = D.DEPTNO
+AND LOC = 'DALLAS' --#we can specify this as DEPT.LOC
+
+#using nested queries further as alias to tables..the below query filters for particular job
+SELECT ENAME, JOB, SAL, E.DEPTNO   --#we need to specify deptno here because its in both tables
+FROM (SELECT * FROM EMP WHERE JOB IN ('MANAGER', 'CLERK')) E, (SELECT * FROM DEPT) D --#we can use the subquery to convert to alias
+WHERE E.DEPTNO = D.DEPTNO
+AND LOC = 'DALLAS' --#we can specify this as DEPT.LOC
+
+#quiz, find employees that work in DALLAS but using it in the from clause and not WHRERE
+SELECT ENAME, JOB, SAL, E.DEPTNO   --#we need to specify deptno here because its in both tables
+FROM (SELECT * FROM EMP WHERE JOB IN ('MANAGER', 'CLERK')) E, (SELECT * FROM DEPT where loc = ('DALLAS')) D
+WHERE E.DEPTNO = D.DEPTNO
+
+#RIGHT JOIN includes ALL data on the right and matching the data on the left
+#and vice versa with LEFT JOIN
+SELECT *
+FROM EMP RIGHT JOIN DEPT
+ON EMP.DEPTNO = DEPT.DEPTNO
+
+#RIGHT JOIN and RIGHT OUTTER JOIN are the same...as well as for LEFT JOIN and LEFT OUTTER JOIN
+SELECT *
+FROM emp LEFT OUTER JOIN dept
+ON emp.deptno = dept.deptno
+
+#FULL OUTER JOIN is all records of the left and right table including nulls on the records that dont match (ie. that are not in both tables)
+SELECT *
+FROM emp FULL OUTER JOIN dept
+ON emp.deptno = dept.deptno
+
+#you can use subqueries in JOIN table and use aliases and it'll act like the actual table
+#this brings performance issues since SQL has to run all of the queries seperately
+SELECT *
+FROM (select * from emp) e FULL OUTER JOIN (select * from dept) d
+ON e.deptno = d.deptno
+
+#replicating the above using LEFT OUTER JOIN instead of FULL OUTER join
+#optimizing query
+SELECT empno, ename, job, mgr, hiredate, sal, comm, emp_deptno as deptno, dept_deptno as deptno, dname, loc FROM (
+SELECT empno, ename, job, mgr, hiredate, sal, comm, e.deptno as emp_deptno, d.deptno as dept_deptno, dname, loc
+FROM (select * from dept) d LEFT OUTER JOIN (select * from emp where job = 'SALESMAN') e
+ON e.deptno = d.deptno
+)
+
+#simplify the above
+SELECT empno, ename, job, mgr, hiredate, sal, comm, e.deptno as deptno, d.deptno as deptno, dname, loc
+FROM (select * from dept) d LEFT OUTER JOIN (select * from emp where job = 'SALESMAN') e
+ON e.deptno = d.deptno
+
+#even more simplified version of above
+SELECT e.*, d.*
+FROM (select * from dept) d LEFT OUTER JOIN (select * from emp where job = 'SALESMAN') e
+ON e.deptno = d.deptno
+
+#EXIST returns value based on a condition being true
+SELECT *
+FROM emp
+WHERE EXISTS (select 'random' from dual)
+
+#NOTEXIST returns value based on a condition being false
+SELECT *
+FROM emp
+WHERE NOT EXISTS (select * from emp where job = 'PROGRAMMER')
+
+#above is not efficient because the where clause going through each line of the subquery
+#the below is basically a join table
+#this is a correlated sub table meaning we're correlating every query of the outside table with the inside query records
+select d.*
+FROM dept d
+WHERE EXISTS (SELECT * FROM emp WHERE d.deptno = emp.deptno)
+
+#correlation using NOT EXISTS
+select d.*
+FROM dept d
+
+WHERE NOT EXISTS (SELECT * FROM emp WHERE d.deptno = emp.deptno)
+
+#correlation goes from inside subquery to out so we cannot use variables, alias or characters of nested query in the greater outside query. You can do this vice versa
+
+#primary key column cannot must have unique identifiers, have duplicate data and cannot be null
+select * emp --#empno is the primary key
+select * deptno --#deptno is the primary key
+
+#creating our own table
+CREATE TABLE stores 
+(
+  store_id number not null,  --#this stipulates its a number and cannot be null
+  city varchar(50) --#variable character (can be words, numbers) and it can have 50 characters max
+  )
+
+#inserting data into table (first column, second column)
+INSERT INTO stores(store_id, city) 
+	VALUES (1,'San Francisco');
+INSERT INTO stores(store_id, city) 
+	VALUES (2,'New York City');
+INSERT INTO stores(store_id, city) 
+	VALUES (3,'Chicago');
+
+INSERT ALL
+	INTO stores (store_id, city) VALUES (4, 'Philadelphia')
+	INTO stores (store_id, city) VALUES (5, 'Boston')
+	INTO stores (store_id, city) VALUES (6, 'Seatle')
+SELECT * FROM DUAL --#we need a command (any command) in order to finish the INSERT ALL statement
+
+#creating a product table
+CREATE TABLE products 
+(
+  product_id number not null,  
+  name varchar(50),
+  product_cost number(5,2), --#(total legth of number, total number of decimals)so $XXX.XX
+  product_retail number(5,2),
+  product_type varchar(10),
+  store_id number not null,
+
+  CONSTRAINT product_pk PRIMARY KEY (product_id)--#giving the constraint a name
+
+  )
+
+#insert data into product table
+INSERT ALL
+	INTO products (product_id, name, product_cost, product_retail, product_type, store_id) VALUES (1001, 'Colgate Toothpaste', 2.25, 5.47, 'hygiene', 2)
+	INTO products (product_id, name, product_cost, product_retail, product_type, store_id) VALUES (1002, 'Colgate Toothpaste', 2.25, 5.47, 'hygiene', 2)
+	INTO products (product_id, name, product_cost, product_retail, product_type, store_id) VALUES (1003, 'Listerine Mouthwash', 1.75, 4.81, 'hygiene', 3)
+SELECT * FROM DUAL 
+
+INSERT ALL
+	INTO products (product_id, name, product_cost, product_retail, product_type, store_id) VALUES (1004, 'T-Shirt', 1.75, 7.47, 'Clothing', 2)
+	INTO products (product_id, name, product_cost, product_retail, product_type, store_id) VALUES (1005, 'T-Shirt', 1.63, 8.47, 'Clothing', 2)
+	INTO products (product_id, name, product_cost, product_retail, product_type, store_id) VALUES (1006, 'T-Shirt', 1.73, 6.81, 'Clothing', 3)
+SELECT * FROM DUAL 
+
+#once you already have a product, you can add to it
+INSERT INTO PRODUCTS VALUES (1011, '', 4.00, 8.00, 'Clothing', 3) 
+
+#to change/ modify information in the table use ALTER
+#the below query makes it invalid for us to include an empty cell in the table
+ALTER TABLE products
+ MODIFY name varchar2(50) not null;  --#varchar2 is a standard use
+
+ALTER TABLE products
+ MODIFY (product_cost number(5, 2) not null,
+ 		 product_retail number(5,2) not null);
+
+#the below alters the column name
+ALTER TABLE products
+	RENAME COLUMN name TO product_name
+
+#to delete a record
+DELETE FROM products WHRERE product_id = 1011
+
+#to see the table information
+DESCRIBE products
+
+#to pull information from one table to create a new one
+CREATE TABLE employees AS
+SELECT empno, ename, job, hiredate, sal, comm
+FROM emp
+
+#add a new column to created table
+ALTER TABLE employees
+ ADD store_id number;
+
+ #pulling record from one table to add to new column in another table
+ UPDATE employees
+ SET store_id = 3
+ WHERE ename in ('KING', 'BLAKE', 'CLARK')
+
+ #quiz, update salesman to store 2, clerk store to 4, analyst 4, manager 1
+ UPDATE employees
+ SET store_id = 2
+ WHERE job = 'SALESMAN'
+
+ UPDATE employees
+ SET store_id = 1
+ WHERE job = 'MANAGER'
+
+ UPDATE employees
+ SET store_id = 4
+ WHERE job in ('CLERK', 'ANALYST')
+
+ #to delete a records.. this is similarto just a SELECT statement
+ DELETE FROM dept WHERE deptno = 40
+
+ #could not just delete DEPT table as a whole since some of its columns is being used in EMP table
+#the share column has a foreign key constraint
+
+#this takes away the foreign key constraints and allows us to alter the column dependent on DEPT table
+#after this we can delete the DEPT table
+ALTER TABLE emp
+DROP CONSTRAINT FK_DEPTNO
+
+DROP TABLE dept
+
+#TRUNCATE eliminates all the data from a table. The table will still exist but with no data
+TRUNCATE TABLE emp
+
+DROP TABLE emp
+
+#creating a tables of content with unique idetifier..SQL will look at the index first given that it has these columns so its much faster to run
+CREATE INDEX emp_name_idx
+	ON employees (ename)
+
+CREATE INDEX emp_name_job_date_idx
+	ON employees(ename, job, hiredate)
+
+CREATE INDEX emp_job_idx
+ON employees(job)
+
+#can drop index by:
+DROP INDEX emp_job_idx
+
+#COMPUTE STATISTICS tells sql to store statistics about an index and allows SQL to optimize how to generate the best result possible
+#to create statistics and index from scratch
+CREATE INDEX emp_name_job_date_idx
+	ON employees(ename, job, hiredate)
+	COMPUTE STATISTICS
+
+#to alter a index to compute statistics
+ALTER INDEX emp_name_job_date_idx
+	REBUILD COMPUTE STATISTICS
+
+#rowid is a psuedo column that can be used in any query and gives it a unique identifier
+#if theres duplicate data then the duplicates will have multiplate occurance
+#the below shows only 1/ unique row id
+SELECT MIN(rowid) --#need the min here to return unique or '1' rowid per record
+FROM STORES
+GROUP BY store_id, city
+
+#to delete the duplicates
+DELETE FROM stores
+WHERE rowid NOT IN (
+SELECT MIN(rowid)
+FROM STORES
+GROUP BY store_id, city
+)
+
+#quiz, create unique index on store id column in stores and make store id primary key column
+ALTER TABLE stores
+ADD CONSTRAINT store_id_pk PRIMARY KEY (store_id)
+
+#when we create a primary key sql also creates a unique index as well 
+
+#all_tables is a ready made table in all sql databases
+SELECT * 
+FROM all_tables
+where table name = 'EMPLOYEES'
+rownum < 10   --#rownum just counts row num and gives you the first x row number
+
+#all_table_columns shows the different columns that we have in a table
+SELECT * 
+FROM all_tab_columns
+where table name = 'EMPLOYEES'
+
+#all_objects
+SELECT * 
+FROM ALL_OBJECTS 
+WHERE ROWNUM < 50
+
+SELECT * 
+FROM ALL_OBJECTS  
+WHERE object_type = 'INDEX'
+AND object_name = 'EMP_NAME_IDX'
+AND ROWNUM < 50
+
+#Allows you to see all columns
+select * from user_tab_columns
+
+#this site has many queries to help query, create and alter tables
+https://www.techonthenet.com/oracle/index.php
+
+#this creates a nickname/ call name for the referencing table
+#with the below query we can use emp_table to refer to the employees table
+CREATE SYNONYM emp_table
+FROM employees
+
+#to store a query that we typically use VIEW
+CREATE VIEW managers_v
+AS SELECT * FROM employees
+WHERE JOB = 'MANAGER'
+
+#and query that view by
+SELECT * FROM managers_v
+
+#to see wghat views that we have in our database
+#we can also go to object browser > views > SQL to see our view quieries
+SELECT * FROM user_objects
+WHERE object_type = 'VIEW'
+
+#to drop a view
+DROP VIEW MANAGER_V
+
+#quiz, query highest paid employee per store, put it into a view as super_employees
+#need join table and group by
+store 1 = JONES
+store 2 = ALLEN
+store 3 = KING
+store 4 = FORD
+
+CREATE VIEW super_employees AS
+SELECT se.*
+FROM employees se,
+	(SELECT MAX(sal) as maxsal, store_id
+	FROM employees
+	GROUP by store_id) maxresults
+WHERE se.store_id = maxresults.store_id
+AND se.sal = maxresults.maxsal
+ORDER by se.store_id
+
+OR this can be done by
+#this is how the instructor did it
+CREATE VIEW super_employees AS
+SELECT e1.*
+FROM employees e1
+INNER JOIN
+	(SELECT store_id, MAX(sal) sal
+	FROM employees
+	GROUP by store_id) e2
+ON e1.store_id = e2.store_id
+AND e1.sal = e2.sal 
+
+#union find unique values and delete duplicates between the table
+#this brings back 14 results
+SELECT * from super_employees
+UNION
+SELECT * from employees
+
+#UNION ALL brings back all the results of both queries including duplicates
+#this brings back 18 results
+SELECT * from super_employees
+UNION
+SELECT * from employees
+
+#MINUS takes out the record that are mentioned below it from the top query
+SELECT * from super_employees
+MINUS
+SELECT * from employees where job = 'SALESMAN'
+
+#edit a VIEW that was already created
+CREATE or REPLACE VIEW super_employees AS
+SELECT e1.*
+FROM employees e1
+INNER JOIN
+	(SELECT store_id, MAX(sal) sal
+	FROM employees
+	GROUP by store_id) e2
+ON e1.store_id = e2.store_id
+AND e1.sal = e2.sal 
+WHERE ename != 'FORD'
+
